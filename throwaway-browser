@@ -1,0 +1,15 @@
+#!/bin/bash
+browser=google-chrome-stable
+
+if ! type $browser 2>/dev/null; then
+  if [[ $(uname) = Darwin ]]; then
+    browser="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  else
+    echo "Chrome not found" >&2
+    exit 1
+  fi
+fi
+
+DATA=$(mktemp -d)
+"$browser" --user-data-dir="$DATA" "$*"
+rm -rf "$DATA"
