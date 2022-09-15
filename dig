@@ -1,0 +1,12 @@
+#!/bin/bash
+# Minimal colour dig wrapper
+# SPDX-License-Identifier: 0BSD
+
+PATH="${PATH/$(dirname $0):}"
+if [ -t 1 ]; then
+  dig "$@" | sed -Eu \
+    -e 's/^(;.*)/[38;5;250m\1[0m/' \
+    -e 's/(;; ->>HEADER.*status: )((NOERROR)|(.*))(,.*)/\1[0m\3[38;5;226m\4[38;5;250m\5[0m/'
+else
+  exec dig "$@"
+fi
